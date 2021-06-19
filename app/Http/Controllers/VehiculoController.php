@@ -52,7 +52,7 @@ class VehiculoController extends Controller
 
         if ($validator->fails()){ 
             $message = $validator->messages();
-            return response()->json(['statusCode'=>400,'success'=>false,'message'=>$message], 400);
+            return response()->json(['created' => false, 'message' => $message], 400);
         }else{
             
 
@@ -71,7 +71,7 @@ class VehiculoController extends Controller
 
 
 
-            return response()->json(['statusCode'=>200,'success'=>true], 200);
+            return response()->json(['created'=>true], 201);
         }
     }
 
