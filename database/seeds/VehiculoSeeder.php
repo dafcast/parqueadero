@@ -14,7 +14,8 @@ class VehiculoSeeder extends Seeder
     {
         Vehiculo::create([
             'placa' => 'ABC123',
-            'Marca' => 'marca',
+            'marca' => 'marca',
+            'tipo' => 'Tipo',
             'propietario_id' => 1
         ]);
     }

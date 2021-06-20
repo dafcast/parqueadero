@@ -24,6 +24,7 @@ class CreateVehiculosTable extends Migration
             $table->id();
             $table->string('placa');
             $table->string('marca');
+            $table->string('tipo');
             $table->foreignId('propietario_id')->references('id')->on('propietarios');
             $table->timestamps();
         });

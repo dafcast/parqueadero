@@ -16,6 +16,7 @@ class StoreVehiculoTest extends TestCase
         $response = $this->postJson('api/vehiculos', [
             "placa" => Str::random(6),
             "marca" => "Marca",
+            "tipo" => "Tipo",
             "nombre" => "Nombre",
             "cedula" => rand(10000000,999999999)
         ]);
@@ -34,17 +35,19 @@ class StoreVehiculoTest extends TestCase
         $response = $this->postJson('api/vehiculos', [
             "placa" => "",
             "marca" => "",
+            "tipo" => "",
             "nombre" => "",
             "cedula" => ""
         ]);
 
         $response
-            ->assertStatus(400)
+            ->assertStatus(200)
             ->assertJson([
                 'created' => false,
                 'message' => [
                     "placa" => [ "El campo placa es obligatorio."],
                     "marca" => [ "El campo marca es obligatorio."],
+                    "tipo" => [ "El campo tipo es obligatorio."],
                     "nombre" => [ "El campo nombre es obligatorio."],
                     "cedula" => [ "El campo cedula es obligatorio."]
                 ]
@@ -58,12 +61,13 @@ class StoreVehiculoTest extends TestCase
         $response = $this->postJson('api/vehiculos', [
             "placa" => "ABC123",
             "marca" => "Marca",
+            "tipo" => "Tipo",
             "nombre" => "Nombre",
             "cedula" => "111111111"
         ]);
 
         $response
-            ->assertStatus(400)
+            ->assertStatus(200)
             ->assertJson([
                 'created' => false,
                 'message' => [

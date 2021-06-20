@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="container">
-        <h1>Bienvenido a Parqueadero 4 ruedas</h1>
+        <search-component></search-component>
+        <vehiculos-component></vehiculos-component>
     </div>
 @endsection

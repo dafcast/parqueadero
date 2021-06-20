@@ -16,7 +16,7 @@ class VehiculoController extends Controller
      */
     public function index()
     {
-        $vehiculos = Vehiculo::all();
+        $vehiculos = Vehiculo::with('propietario')->get();
 
         $vehiculosMarca = [];
         foreach ($vehiculos as $vehiculo) {
@@ -46,13 +46,14 @@ class VehiculoController extends Controller
         $validator = Validator::make($request->all(), [ 
             'placa'=>'required|max:6|unique:App\Vehiculo,placa',
             'marca'=>'required',
+            'tipo'=>'required',
             'nombre'=>'required',
             'cedula'=>'required|numeric|unique:App\Propietario,cedula',
         ]);
 
         if ($validator->fails()){ 
             $message = $validator->messages();
-            return response()->json(['created' => false, 'message' => $message], 400);
+            return response()->json(['created' => false, 'message' => $message], 200);
         }else{
             
 
@@ -66,6 +67,7 @@ class VehiculoController extends Controller
 
             $vehiculo->placa = $request->placa;
             $vehiculo->marca = $request->marca;
+            $vehiculo->tipo = $request->tipo;
             $vehiculo->propietario_id = $propietario->id;
             $vehiculo->save();
 
@@ -86,26 +88,38 @@ class VehiculoController extends Controller
     {
 
         if($request->placa){
-            $vehiculo = Vehiculo::where('placa',$request->placa)->get();
+            $vehiculo = Vehiculo::where('placa', 'like','%'.$request->placa.'%')->with('propietario')->get();
             if(count($vehiculo) == 0){
                 return response()->json(['error' => 'No se encuentra el vehiculo']);
             }else{
                 return response()->json($vehiculo);
             }            
         }elseif($request->nombre){
-            $propietario = Propietario::where('nombre',$request->nombre)->get();
-            if(count($propietario) == 0){
+            
+            $propietarios = Propietario::where('nombre', 'like','%'.$request->nombre.'%')->get();
+            $vehiculo = [];
+            foreach ($propietarios as $propietario) {
+                $vehiculo[] = Vehiculo::where('propietario_id', '=', $propietario->id)->with('propietario')->get()[0];
+            }
+            if(count($vehiculo) == 0){
                 return response()->json(['error' => 'No se encuentra el vehiculo']);
             }else{
-                return response()->json($propietario[0]->vehiculo);
+                return response()->json($vehiculo);
             }  
+
         }elseif($request->cedula){
-            $propietario = Propietario::where('cedula',$request->cedula)->get();
-            if(count($propietario) == 0){
+            
+            $propietarios = Propietario::where('cedula', 'like','%'.$request->cedula.'%')->get();
+            $vehiculo = [];
+            foreach ($propietarios as $propietario) {
+                $vehiculo[] = Vehiculo::where('propietario_id', '=', $propietario->id)->with('propietario')->get()[0];
+            }
+            if(count($vehiculo) == 0){
                 return response()->json(['error' => 'No se encuentra el vehiculo']);
             }else{
-                return response()->json($propietario[0]->vehiculo);
-            }  
+                return response()->json($vehiculo);
+            }
+
         }else{
             return response()->json(['error' => 'parametro de busqueda invalido']);
         }
