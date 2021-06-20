@@ -23,6 +23,7 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 Vue.component('vehiculos-component', require('./components/VehiculosComponent.vue').default);
 Vue.component('create-component', require('./components/CreateComponent.vue').default);
 Vue.component('search-component', require('./components/SearchComponent.vue').default);
+Vue.component('demo-component', require('./components/DemoComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

@@ -21,6 +21,11 @@ Route::get('/vehiculos/create', function () {
     return view('vehiculos.create');
 })->name('vehiculos.create');
 
+
+Route::get('/demo', function () {
+    return view('demo.index');
+})->name('demo.index');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
